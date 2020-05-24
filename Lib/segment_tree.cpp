@@ -4,8 +4,8 @@
 
 using namespace std;
 
-// Perform Range Min Queries, the index of the smallest number between two 
-// indices in a list of numbers.
+// Perform Range Min/Max/Sum Queries, the index of the smallest number between 
+// two indices in a list of numbers.
 class SegmentTree 
 {
 private:
@@ -26,13 +26,18 @@ private:
 	void build(int p, int L, int R)
 	{
 		if (L == R)
-			st[p] = L;
+		{
+			// st[p] = L; // Range Min/Max Queries
+			st[p] = A[L]; // Range Sum Queries
+		}
 		else
 		{
 			build(left(p), L, (L+R)/2);
 			build(right(p), (L+R)/2+1, R);
 			int p1 = st[left(p)], p2 = st[right(p)];
-			st[p] = A[p1] <= A[p2] ? p1 : p2;
+			// st[p] = A[p1] < A[p2] ? p1 : p2; // Range Min Queries
+			// st[p] = A[p1] > A[p2] ? p1 : p2; // Range Max Queries
+			st[p] = p1 + p2; // Range Sum Queries
 		}
 	}
 
@@ -49,7 +54,9 @@ private:
 			return p2;
 		if (p2 == -1)
 			return p1;
-		return A[p1] <= A[p2] ? p1 : p2;
+		// return A[p1] < A[p2] ? p1 : p2; // Range Min Queries
+		// return A[p1] > A[p2] ? p1 : p2; // Range Max Queries
+		return p1 + p2; // Range Sum Queries
 	}
 
 public:
@@ -71,4 +78,6 @@ int main()
 {
 	SegmentTree st({18, 17, 13, 19, 15, 11, 20});
 	cout << st.rmq(3, 4) << endl;
+	cout << st.rmq(1, 3) << endl;
+	cout << st.rmq(4, 6) << endl;
 }
