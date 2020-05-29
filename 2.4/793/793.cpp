@@ -1,4 +1,3 @@
-// Modified from Competitive Programming 3.
 #include <iostream>
 #include <vector>
 
@@ -7,7 +6,7 @@ using namespace std;
 // Given some N sets and a series of unions, find whether two sets are the same,
 // the number of disjoint sets, and/or the size of each set.
 //
-// 0-indexed.
+// 0-Indexed
 class UnionFind
 {
 private:
@@ -71,8 +70,34 @@ public:
 
 int main()
 {
-	UnionFind uf(5);
-	uf.union_set(0, 1);
-	cout << uf.num_disjoint_sets() << " " << uf.is_same_set(0, 1) << " " << uf.size_of_set(0) << endl;
-}
+	int N;
+	scanf("%d\n\n", &N);
+	for (int n = 0; n < N; n++)
+	{
+		int C;
+		scanf("%d\n", &C);	
 
+		int connected = 0, unconnected = 0;
+		UnionFind uf(C);
+
+		string input;
+		while (getline(cin, input))
+		{
+			if (input == "")
+				break;
+
+			char type; int a, b;
+			sscanf(input.c_str(), "%c %d %d\n", &type, &a, &b);
+			if (type == 'c')
+				uf.union_set(a-1, b-1);
+			else if (type == 'q')
+				if (uf.is_same_set(a-1, b-1))
+					connected += 1;
+				else
+					unconnected += 1;
+		}
+		printf("%d,%d\n", connected, unconnected);
+		if (n != N-1)
+			cout << endl;
+	}
+}

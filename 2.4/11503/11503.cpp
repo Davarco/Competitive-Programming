@@ -1,13 +1,13 @@
-// Modified from Competitive Programming 3.
 #include <iostream>
+#include <algorithm>
 #include <vector>
+#include <unordered_map>
+#include <map>
 
 using namespace std;
 
 // Given some N sets and a series of unions, find whether two sets are the same,
 // the number of disjoint sets, and/or the size of each set.
-//
-// 0-indexed.
 class UnionFind
 {
 private:
@@ -71,8 +71,28 @@ public:
 
 int main()
 {
-	UnionFind uf(5);
-	uf.union_set(0, 1);
-	cout << uf.num_disjoint_sets() << " " << uf.is_same_set(0, 1) << " " << uf.size_of_set(0) << endl;
-}
+	int N;
+	cin >> N;
+	for (int n = 0; n < N; n++)
+	{
+		UnionFind uf(200000);
+		unordered_map<string, int> m;
+		int index = 0;
 
+		int F;
+		cin >> F;
+		for (int i = 0; i < F; i++)
+		{
+			string first, second;
+			cin >> first >> second;
+			if (m.find(first) == m.end())
+				m[first] = index++;
+			if (m.find(second) == m.end())
+				m[second] = index++;
+			int a = m[first];
+			int b = m[second];
+			uf.union_set(a, b);
+			cout << uf.size_of_set(a) << endl;
+		}
+	}
+}

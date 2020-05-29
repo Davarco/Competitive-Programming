@@ -1,13 +1,14 @@
-// Modified from Competitive Programming 3.
 #include <iostream>
+#include <algorithm>
 #include <vector>
+#include <set>
 
 using namespace std;
 
+typedef vector<int> vi;
+
 // Given some N sets and a series of unions, find whether two sets are the same,
 // the number of disjoint sets, and/or the size of each set.
-//
-// 0-indexed.
 class UnionFind
 {
 private:
@@ -71,8 +72,58 @@ public:
 
 int main()
 {
-	UnionFind uf(5);
-	uf.union_set(0, 1);
-	cout << uf.num_disjoint_sets() << " " << uf.is_same_set(0, 1) << " " << uf.size_of_set(0) << endl;
+	int N, M;
+	scanf("%d %d\n", &N, &M);
+	UnionFind uf(N);
+	
+	char t0, t1, t2;
+	scanf("%c%c%c\n", &t0, &t1, &t2);
+	int a = t0 - 'A', b = t1 - 'A', c = t2 - 'A';
+	
+	vi m(26, -1);
+	m[a] = 0;
+	m[b] = 1;
+	m[c] = 2;
+	int index = 3;
+
+	vector<vi> edges(N);
+
+	for (int i = 0; i < M; i++)
+	{
+		scanf("%c%c\n", &t0, &t1);
+		a = t0 - 'A';
+		b = t1 - 'A';
+		if (m[a] == -1)
+		{
+			m[a] = index;
+			index += 1;
+		}
+		if (m[b] == -1)
+		{
+			m[b] = index;
+			index += 1;
+		}
+
+		if (m[a] < m[b])
+			edges[m[a]].push_back(m[b]);
+		else
+			edges[m[b]].push_back(m[a]);
+	}
+
+	int count = 0;
+	int prev = 0;
+	while (flag)
+	{
+		for (int i = 0; i < edges.size(); i++)
+		{
+			for (int j = 0; j < edges[i].size(); j++)
+			{
+				edges[i][j]	
+			}
+		}
+	}
 }
+
+
+
 

@@ -1,16 +1,22 @@
-// Modified from Competitive Programming 3.
 #include <iostream>
+#include <algorithm>
 #include <vector>
+#include <climits>
+#include <map>
 
 using namespace std;
+
+#define NEG 100000
+int bounds[200001];
+
 
 // Perform Range Min/Max/Sum Queries, the index of the smallest number between 
 // two indices in a list of numbers.
 //
-// 0-indexed, inclusive, returns indexes.
+// 0-indexed.
 class SegmentTree 
 {
-private:
+public:
 	vector<int> st, A;
 	int N;
 
@@ -29,17 +35,16 @@ private:
 	{
 		if (L == R)
 		{
-			st[p] = L; // Range Min/Max Queries
-			// st[p] = A[L]; // Range Sum Queries
+			st[p] = L; 
+			// printf("Equal: %d %d %d\n", L, R, A[st[p]]);
 		}
 		else
 		{
 			build(left(p), L, (L+R)/2);
 			build(right(p), (L+R)/2+1, R);
 			int p1 = st[left(p)], p2 = st[right(p)];
-			// st[p] = A[p1] < A[p2] ? p1 : p2; // Range Min Queries
-			st[p] = A[p1] > A[p2] ? p1 : p2; // Range Max Queries
-			// st[p] = p1 + p2; // Range Sum Queries
+			st[p] = A[p1] > A[p2] ? p1 : p2; 
+			// printf("Sum: %d %d %d\n", L, R, A[st[p]]);
 		}
 	}
 
@@ -48,6 +53,7 @@ private:
 	{
 		if (i > R || j < L)
 			return -1;
+		// printf("RMQ: %d %d\n", L, R);
 		if (L >= i && R <= j) 
 			return st[p];
 		int p1 = rmq(left(p), L, (L+R)/2, i, j);
@@ -56,12 +62,9 @@ private:
 			return p2;
 		if (p2 == -1)
 			return p1;
-		// return A[p1] < A[p2] ? p1 : p2; // Range Min Queries
-		return A[p1] > A[p2] ? p1 : p2; // Range Max Queries
-		// return p1 + p2; // Range Sum Queries
+		return A[p1] > A[p2] ? p1 : p2;
 	}
 
-public:
 	SegmentTree(const vector<int> &_A)
 	{
 		A = _A;
@@ -78,10 +81,35 @@ public:
 
 int main()
 {
-	// SegmentTree st({18, 17, 13, 19, 15, 11, 20});
-	SegmentTree st({2, 2, 4, 4, 4, 4, 1, 3, 3, 3});
-	// cout << st.rmq(3, 4) << endl;
-	cout << st.rmq(6, 9) << endl;
-	// cout << st.rmq(1, 3) << endl;
-	// cout << st.rmq(4, 6) << endl;
+	while (true)
+	{
+		int N; cin >> N;
+		if (N == 0) break;
+		int Q; cin >> Q;
+
+		int prev = INT_MIN;
+		vector<int> A(N);
+		vector<int> m0(200001, 0);
+		for (int i = 0; i < N; i++)
+		{
+			cin >> A[i];
+			m0[A[i]+NEG] += 1;
+		}
+
+		vector<int> counts(N);
+		for (int i = 0; i < N; i++)
+			counts[i] = m0[A[i]+NEG];
+
+		SegmentTree sg(counts);
+		for (int i = 0; i < Q; i++)
+		{
+			int b, c;
+			cin >> b >> c; b -= 1; c -= 1;
+
+			int case2 = counts[sg.rmq(b, c)];
+		}
+	}
 }
+
+
+
