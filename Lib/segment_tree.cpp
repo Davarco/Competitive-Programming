@@ -29,8 +29,8 @@ private:
 	{
 		if (L == R)
 		{
-			st[p] = L; // Range Min/Max Queries
-			// st[p] = A[L]; // Range Sum Queries
+			// st[p] = L; // Range Min/Max Queries
+			st[p] = A[L]; // Range Sum Queries
 		}
 		else
 		{
@@ -38,8 +38,8 @@ private:
 			build(right(p), (L+R)/2+1, R);
 			int p1 = st[left(p)], p2 = st[right(p)];
 			// st[p] = A[p1] < A[p2] ? p1 : p2; // Range Min Queries
-			st[p] = A[p1] > A[p2] ? p1 : p2; // Range Max Queries
-			// st[p] = p1 + p2; // Range Sum Queries
+			// st[p] = A[p1] > A[p2] ? p1 : p2; // Range Max Queries
+			st[p] = p1 + p2; // Range Sum Queries
 		}
 	}
 
@@ -57,8 +57,8 @@ private:
 		if (p2 == -1)
 			return p1;
 		// return A[p1] < A[p2] ? p1 : p2; // Range Min Queries
-		return A[p1] > A[p2] ? p1 : p2; // Range Max Queries
-		// return p1 + p2; // Range Sum Queries
+		// return A[p1] > A[p2] ? p1 : p2; // Range Max Queries
+		return p1 + p2; // Range Sum Queries
 	}
 
 public:
@@ -80,7 +80,7 @@ int main()
 {
 	// SegmentTree st({18, 17, 13, 19, 15, 11, 20});
 	SegmentTree st({2, 2, 4, 4, 4, 4, 1, 3, 3, 3});
-	// cout << st.rmq(3, 4) << endl;
+	cout << st.rmq(3, 4) << endl;
 	cout << st.rmq(6, 9) << endl;
 	// cout << st.rmq(1, 3) << endl;
 	// cout << st.rmq(4, 6) << endl;

@@ -4,22 +4,22 @@
 
 using namespace std;
 
-vector<int> A, st, wait; int N;
+vector<int> A, st, lazy; int N;
 
 int LT(int i) { return i*2+1; }
 int RT(int i) { return i*2+2; }
 
 void st_ru_helper(int i, int L, int R, int a, int b, int d)
 {
-	if (wait[i] != 0)
+	if (lazy[i] != 0)
 	{
-		st[i] += (R-L+1) * wait[i];
+		st[i] += (R-L+1) * lazy[i];
 		if (L != R)
 		{
-			wait[LT(i)] += wait[i]; 
-			wait[RT(i)] += wait[i];
+			lazy[LT(i)] += lazy[i]; 
+			lazy[RT(i)] += lazy[i];
 		}
-		wait[i] = 0;
+		lazy[i] = 0;
 	}
 	if (L > R || L > b || R < a) 
 		return;
@@ -28,8 +28,8 @@ void st_ru_helper(int i, int L, int R, int a, int b, int d)
 		st[i] += (R-L+1) * d;
 		if (L != R)
 		{
-			wait[LT(i)] += d; 
-			wait[RT(i)] += d;
+			lazy[LT(i)] += d; 
+			lazy[RT(i)] += d;
 		}
 	}
 	else
@@ -48,15 +48,15 @@ void st_ru(int a, int b, int d)
 
 int st_rq_helper(int i, int L, int R, int a, int b)
 {
-	if (wait[i] != 0)
+	if (lazy[i] != 0)
 	{
-		st[i] += (R-L+1) * wait[i];
+		st[i] += (R-L+1) * lazy[i];
 		if (L != R)
 		{
-			wait[LT(i)] += wait[i]; 
-			wait[RT(i)] += wait[i];
+			lazy[LT(i)] += lazy[i]; 
+			lazy[RT(i)] += lazy[i];
 		}
-		wait[i] = 0;
+		lazy[i] = 0;
 	}
 	if (L > R || a > R || b < L) return 0;
 	if (L >= a && R <= b) return st[i];
@@ -86,7 +86,7 @@ void st_init(const vector<int> &_A)
 	A = _A;
 	N = A.size();
 	st.assign(N*4, 0);
-	wait.assign(N*4, 0);
+	lazy.assign(N*4, 0);
 	st_init_helper(0, 0, N-1);
 }
 
