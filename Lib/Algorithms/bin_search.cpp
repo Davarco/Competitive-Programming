@@ -4,6 +4,9 @@
 
 using namespace std;
 
+/*
+ * Finds the index of the element in the vector equal to n.
+ */
 int find_element(const vector<int> &vec, int n)
 {
 	int a = 0, b = vec.size();
