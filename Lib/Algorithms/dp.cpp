@@ -9,12 +9,12 @@ using namespace std;
 typedef vector<vector<int>> vvi;
 
 // O(N), Kadane's Algorithm
-void max_1d_range_sum()
+void max_1d_range_sum_faster()
 {
 	vector<int> A({ -2, -3, 4, -1, -2, 1, 5, -3 });
 	int N = A.size();
 
-	int sum = 0, ans = 0;
+	int sum = 0, ans = INT_MIN;
 	for (int i = 0; i < N; i++)
 	{
 		sum += A[i];
@@ -50,7 +50,31 @@ void max_2d_range_sum()
 	cout << ans << endl;
 }
 
-// O(N^2), but a O(N log N) solution exists
+// O(N^3), combine with Kadane's algorithm
+void max_2d_range_sum_faster()
+{
+	vvi A({{ 0, -2, -7, 0 }, { 9, 2, -6, 2 }, { -4, 1, -4, 1 }, { -1, 8, 0, -2 }});
+	int N = 4;
+
+	for (int r = 0; r < N; r++) for (int c = 0; c < N; c++)
+		if (r > 0) A[r][c] += A[r-1][c];
+
+	int ans = INT_MIN;
+	for (int r0 = 0; r0 < N; r0++) for (int r1 = r0; r1 < N; r1++) 
+	{
+		int sum = 0;
+		for (int c = 0; c < N; c++)
+		{
+			sum += A[r1][c];
+			if (r0 > 0) sum -= A[r0-1][c];
+			ans = max(ans, sum);
+			if (sum < 0) sum = 0;
+		}
+	}
+	cout << ans << endl;
+}
+
+// O(N^2)
 void longest_increasing_subsequence()
 {
 	vector<int> A({ -7, -9, 10, 9, 2, 3, 8, 8, 1 });
@@ -69,6 +93,39 @@ void longest_increasing_subsequence()
 	
 	int best = *max_element(LIS.begin(), LIS.end());
 	cout << best << endl;
+}
+
+// O(N log N)
+void longest_increasing_subsequence_faster()
+{
+	vector<int> A({ -7, -9, 10, 9, 2, 3, 8, 8, 1 });
+	int N = A.size();
+
+	vector<int> LIS(N);
+	int size = 0;
+	for (int i = 0; i < N; i++)
+	{
+		int a = 0, b = size;
+		while (a < b)
+		{
+			int m = (a+b)/2;
+			if (LIS[m] == A[i])
+			{
+				a = m;
+				break;
+			}
+			else if (LIS[m] < A[i])
+				a = m+1;
+			else 
+				b = m;
+		}
+		
+		// int a = lower_bound(LIS.begin(), LIS.begin()+size, A[i]) - LIS.begin();
+		LIS[a] = A[i];
+		if (a == size) 
+			size += 1;
+	}
+	cout << size << endl;
 }
 
 // O(NS), also known as the subset sum problem
@@ -124,9 +181,11 @@ void coin_change()
 
 int main()
 {
-	max_1d_range_sum();
+	max_1d_range_sum_faster();
 	max_2d_range_sum();
+	max_2d_range_sum_faster();
 	longest_increasing_subsequence();
+	longest_increasing_subsequence_faster();
 	knapsack_01();
 	coin_change();
 }
