@@ -14,6 +14,6 @@ int main()
 	for (int t = 0; t < T; t++)
 	{
 		cin >> N >> M;
-		
+				
 	}
 }

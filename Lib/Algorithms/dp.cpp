@@ -132,7 +132,6 @@ void longest_increasing_subsequence_faster()
 int knapsack[100][100];
 vector<int> knapsack_V({ 100, 70, 50, 10 });
 vector<int> knapsack_W({ 10, 4, 6, 12 });
-
 int knapsack_01_search(int id, int rem_weight)
 {
 	if (rem_weight == 0 || id == knapsack_V.size())
@@ -151,7 +150,6 @@ int knapsack_01_search(int id, int rem_weight)
 	}
 	return knapsack[id][rem_weight];
 }
-
 void knapsack_01()
 {
 	int N = 4, S = 12;	
