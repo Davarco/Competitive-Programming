@@ -1,2 +1,2 @@
 # Competitive-Programming
-UVa solutions for starred exercises in Competitive Programming 3. 
+Various solutions, implementations, and guides for all things related to competitive programming.
