@@ -100,5 +100,3 @@ int main()
 	cout << st_rq(0, 9) << endl;
 }
 
-
-

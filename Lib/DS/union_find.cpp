@@ -4,10 +4,6 @@
 
 using namespace std;
 
-// Given some N sets and a series of unions, find whether two sets are the same,
-// the number of disjoint sets, and/or the size of each set.
-//
-// 0-indexed.
 class UnionFind
 {
 private:
