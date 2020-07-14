@@ -116,39 +116,73 @@ void toposort_on_dag()
 // Bipartite Graph Check - BFS
 // Straightforward implementation, not shown here
 
-// Better known as "Finding Articulation Points and Bridges on an Undirected Graph"
-vi dpb_num, dpb_low, dpb_parent, dpb_vertex; int dpb_counter, dpb_rootch;
-vvi G_dpb = {{ 1 }, { 0, 2, 3 }, { 1 }, { 1 }, { 1, 5 }, { 1, 4 }};
-void disconnecting_points_and_bridges_helper(int u)
+// Finds the points and edges that cause the graph to become disconnected if removed. 
+vi cut_num, cut_min, cut_parent, cut_vertex; int cut_counter, cut_rootch;
+vvi G_cut = {{ 1 }, { 0, 2, 3 }, { 1 }, { 1 }, { 1, 5 }, { 1, 4 }};
+void cut_points_and_edges_helper(int u)
 {
-	dpb_num[u] = dpb_low[u] = dpb_counter++;
-	for (int i = 0; i < G_dpb[u].size(); i++)
+	cut_num[u] = cut_min[u] = cut_counter++;
+	for (int i = 0; i < G_cut[u].size(); i++)
 	{
-		int v = G_dpb[u][i];
-		if (dpb_num[v] == -1)
+		int v = G_cut[u][i];
+		if (cut_num[v] == -1)
 		{
-			dpb_parent[v] = u;
-			if (u == 0) dpb_rootch += 1; // Assume graph is connected.
-			disconnecting_points_and_bridges_helper(v);
-			if (dpb_low[v] >= dpb_num[u]) dpb_vertex[u] = true;
-			if (dpb_low[v] > dpb_num[u]) ; // Edge u-v is a bridge.
-			dpb_low[u] = min(dpb_low[u], dpb_low[v]);
+			cut_parent[v] = u;
+			if (u == 0) cut_rootch += 1; // Assume graph is connected.
+			cut_points_and_edges_helper(v);
+			if (cut_min[v] >= cut_num[u]) cut_vertex[u] = true;
+			if (cut_min[v] > cut_num[u]) ; // Edge u-v is a bridge.
+			cut_min[u] = min(cut_min[u], cut_min[v]);
 		}
-		else if (v != dpb_parent[u])
-			dpb_low[u] = min(dpb_low[u], dpb_num[v]);
+		else if (v != cut_parent[u])
+			cut_min[u] = min(cut_min[u], cut_num[v]);
 	}
 }
-void disconnecting_points_and_bridges()
+void cut_points_and_edges()
 {
-	int N = G_dpb.size();
-	dpb_num.assign(N, -1), dpb_low.assign(N, 0), dpb_parent.assign(N, 0), dpb_vertex.assign(N, 0);
-	dpb_counter = 0, dpb_rootch = 0;
-	disconnecting_points_and_bridges_helper(0);
-	dpb_vertex[0] = dpb_rootch > 1;
-	for (int i = 0; i < N; i++) if (dpb_vertex[i]) cout << i << " "; cout << endl;
+	int N = G_cut.size();
+	cut_num.assign(N, -1), cut_min.assign(N, 0), cut_parent.assign(N, 0), cut_vertex.assign(N, 0);
+	cut_counter = 0, cut_rootch = 0;
+	cut_points_and_edges_helper(0);
+	cut_vertex[0] = cut_rootch > 1;
+	for (int i = 0; i < N; i++) if (cut_vertex[i]) cout << i << " "; cout << endl;
 }
 
-// Finding Strongly Connected Components - DFS
+// Finds strongly connected components on a directed graph.
+vi tarjan_num, tarjan_min, tarjan_vis, tarjan_now; int tarjan_counter;
+vvi G_target = {{ 1 }, { 3 }, { 1 }, { 2, 4 }, { 5 }, { 7 }, { 4 }, { 6 }};
+void tarjan_helper(int u)
+{
+	tarjan_num[u] = tarjan_min[u] = tarjan_counter++;
+	tarjan_now.push_back(u);
+	tarjan_vis[u] = true;
+	for (int i = 0; i < G_target[u].size(); i++)
+	{
+		int v = G_target[u][i];
+		if (tarjan_num[v] == -1)
+			tarjan_helper(v);
+		if (tarjan_vis[v])
+			tarjan_min[u] = min(tarjan_min[u], tarjan_min[v]);
+	}
+	if (tarjan_min[u] == tarjan_num[u])
+	{
+		while (true)
+		{
+			int v = tarjan_now.back(); tarjan_now.pop_back();
+			tarjan_vis[v] = false;
+			cout << v << " "; 
+			if (u == v) break;
+		}
+		cout << endl;
+	}
+}
+void tarjan()
+{
+	int N = G_target.size();
+	tarjan_num.assign(N, -1), tarjan_min.assign(N, 0), tarjan_vis.assign(N, false);
+	tarjan_counter = 0;
+	for (int i = 0; i < N; i++) if (tarjan_num[i] == -1) tarjan_helper(i);
+}
 
 int main()
 {
@@ -156,7 +190,8 @@ int main()
 	dfs_recursive();
 	bfs();
 	toposort_on_dag();
-	disconnecting_points_and_bridges();
+	cut_points_and_edges();
+	tarjan();
 }
 
 
