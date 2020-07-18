@@ -1,0 +1,105 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <tuple>
+#include <cmath>
+
+using namespace std;
+
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<pair<double, ii>> vdii;
+
+#define Pair(a, b) make_pair(a, b)
+
+class UnionFind
+{
+private:
+	vector<int> p, rank, set_size;
+	int num_sets;
+
+public:
+	UnionFind(int N)
+	{
+		p.assign(N, 0), rank.assign(N, 0), set_size.assign(N, 1);
+		for (int i = 0; i < N; i++) p[i] = i;
+		num_sets = N;
+	}
+
+	int find_set(int i) { return p[i] == i ? i : (p[i] = find_set(p[i])); }
+
+	// O(1)
+	bool is_same_set(int i, int j) { return find_set(i) == find_set(j); }
+
+	// O(1)
+	void union_set(int i, int j)
+	{
+		if (!is_same_set(i, j))
+		{
+			num_sets -= 1;
+			int a = find_set(i), b = find_set(j);
+			if (rank[a] > rank[b])
+			{
+				p[b] = a;
+				set_size[a] += set_size[b];
+			}
+			else
+			{
+				p[a] = b;
+				set_size[b] += set_size[a];
+				if (rank[a] == rank[b]) rank[b] += 1;
+			}
+		}
+	}
+
+	// O(1)
+	int num_disjoint_sets() { return num_sets; }
+
+	// O(1)
+	int size_of_set(int i) { return set_size[find_set(i)]; }
+};
+
+int T, N; double R;
+vii C;
+vdii G;
+
+int main()
+{
+	cin >> T;
+	for (int t = 0; t < T; t++)
+	{
+		C.clear(); G.clear();
+		cin >> N >> R;
+		for (int n = 0; n < N; n++)
+		{
+			int a, b; cin >> a >> b;
+			C.push_back(Pair(a, b));
+		}
+		for (int i = 0; i < N; i++)
+			for (int j = 0; j < i; j++)
+			{
+				int da = C[i].first - C[j].first, db = C[i].second - C[j].second;
+				G.push_back(Pair(sqrt(da*da+db*db), Pair(i, j)));
+			}
+		
+		sort(G.begin(), G.end());
+		UnionFind uf(N);
+		double road_cost = 0, rr_cost = 0; int states = 1;
+		for (int i = 0; i < G.size(); i++)
+		{
+			pair<double, ii> edge = G[i];
+			if (!uf.is_same_set(edge.second.first, edge.second.second))
+			{
+				if (edge.first > R)
+				{
+					states += 1;
+					rr_cost += edge.first;
+				}
+				else
+					road_cost += edge.first;
+				uf.union_set(edge.second.first, edge.second.second);
+			}
+		}
+		printf("Case #%d: %d %d %d\n", t+1, states, (int)(road_cost+0.5), (int)(rr_cost+0.5));
+	}
+}
