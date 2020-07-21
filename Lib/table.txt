@@ -1,0 +1,15 @@
+Basic Runtimes Table:
++-----+-----------------+------------------------------+
+|  n  | Worst Algorithm |           Example            |
++-----+-----------------+------------------------------+
+| 11  | O(n!), O(n^6)   | Enumerating Permutations     |
+| 18  | O(2^n * n^2)    | DP TSP                       |
+| 22  | O(2^n * n)      | DP w/ Bitmask                |
+| 100 | O(n^4)          | DP w/ 3D and Single Loop     |
+| 400 | O(n^3)          | Floyd Warshall's             |
+| 2K  | O(n^2 log n)    | 2 Nested Loops and a Tree DS |
+| 10K | O(n^2)          | Bad Sort                     |
+| 1M  | O(n log n)      | Good Sort, Segment Tree      |
++-----+-----------------+------------------------------+
+
+

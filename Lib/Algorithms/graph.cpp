@@ -131,7 +131,7 @@ void cut_points_and_edges_helper(int u)
 			if (u == 0) cut_rootch += 1; // Assume graph is connected.
 			cut_points_and_edges_helper(v);
 			if (cut_min[v] >= cut_num[u]) cut_vertex[u] = true;
-			if (cut_min[v] > cut_num[u]) ; // Edge u-v is a bridge.
+			if (cut_min[v] > cut_num[u]) ; // Edge u-v is a bridge, print here.
 			cut_min[u] = min(cut_min[u], cut_min[v]);
 		}
 		else if (v != cut_parent[u])
