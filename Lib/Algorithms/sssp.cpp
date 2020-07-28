@@ -28,7 +28,7 @@ void dijkstra_v1()
 	
 	int V = G.size(), S = 2;
 	vi dist(V, INF);
-	priority_queue<ii, vector<ii>, greater<ii>> pq;
+	priority_queue<ii, vii, greater<ii>> pq;
 	
 	dist[S] = 0, pq.push(ii(0, S));
 	while (pq.size() > 0)

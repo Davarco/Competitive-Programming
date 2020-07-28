@@ -69,28 +69,40 @@ int main()
 				if (prev[dir])
 				{
 					prev[dir] = false;
-					if (dir == 0 && good(r-n, c) && distance[r-n][c][dir] == -1)
+					if (dir == 0 && good(r-n, c))
 					{
-						distance[r-n][c][dir] = distance[r][c][dir] + 1;
-						q.push(iii(dir, ii(r-n, c)));
+						if (distance[r-n][c][dir] == -1)
+						{
+							distance[r-n][c][dir] = distance[r][c][dir] + 1;
+							q.push(iii(dir, ii(r-n, c)));
+						}
 						prev[dir] = true;
 					}
-					if (dir == 1 && good(r, c+n) && distance[r][c+n][dir] == -1)
+					if (dir == 1 && good(r, c+n))
 					{
-						distance[r][c+n][dir] = distance[r][c][dir] + 1;
-						q.push(iii(dir, ii(r, c+n)));
+						if (distance[r][c+n][dir] == -1)
+						{
+							distance[r][c+n][dir] = distance[r][c][dir] + 1;
+							q.push(iii(dir, ii(r, c+n)));
+						}
 						prev[dir] = true;
 					}
-					if (dir == 2 && good(r+n, c) && distance[r+n][c][dir] == -1)
+					if (dir == 2 && good(r+n, c))
 					{
-						distance[r+n][c][dir] = distance[r][c][dir] + 1;
-						q.push(iii(dir, ii(r+n, c)));
+						if (distance[r+n][c][dir] == -1)
+						{
+							distance[r+n][c][dir] = distance[r][c][dir] + 1;
+							q.push(iii(dir, ii(r+n, c)));
+						}
 						prev[dir] = true;
 					}
-					if (dir == 3 && good(r, c-n) && distance[r][c-n][dir] == -1)
+					if (dir == 3 && good(r, c-n))
 					{
-						distance[r][c-n][dir] = distance[r][c][dir] + 1;
-						q.push(iii(dir, ii(r, c-n)));
+						if (distance[r][c-n][dir] == -1)
+						{
+							distance[r][c-n][dir] = distance[r][c][dir] + 1;
+							q.push(iii(dir, ii(r, c-n)));
+						}
 						prev[dir] = true;
 					}
 				}
@@ -100,11 +112,6 @@ int main()
 		int best = INT_MAX;
 		for (int i = 0; i < 4; i++)
 			best = min(best, distance[end.first][end.second][i]);
-		for (int i = 0; i < M+1; i++)
-		{
-			for (int j = 0; j < N+1; j++) 
-				cout << setw(3) << min({ distance[i][j][0], distance[i][j][1], distance[i][j][2], distance[i][j][3] }) << " "; cout << endl;
-		}
 		cout << best << endl;
 	}
 }
