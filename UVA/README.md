@@ -12,3 +12,4 @@ This section contains the solutions to most of the starred problems in Competiti
 * 4.2: Graph Traversal
 * 4.3: Minimum Spanning Tree
 * 4.4: Single-Source Shortest Paths
+* 4.5: All-Pairs Shortest Paths
