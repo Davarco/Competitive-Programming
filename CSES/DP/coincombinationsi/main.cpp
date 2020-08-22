@@ -17,19 +17,33 @@
 using namespace std;
 
 typedef long long LL;
+#define int LL
 typedef pair<int, int> ii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
 typedef vector<ii> vii;
 
+#define MOD 1000000007
 #define INF 100000000
 #define PLIST(a, b) \
 	for (int i = 0; i < b; i++) cout << a[i] << (i == b-1 ? '\n' : ' ');
 #define PLIST2(a, b) \
 	for (int i = 0; i < b; i++) cout << a << (i == b-1 ? '\n' : ' ');
 
+int N, X;
+
 signed main()
 {
-
+	cin >> N >> X;
+	vi C(N);
+	for (int n = 0; n < N; n++)
+		cin >> C[n];
+	vi dp(X+1, 0);
+	dp[0] = 1;
+	for (int x = 0; x <= X; x++)
+		for (int c = 0; c < N; c++)
+			if (x-C[c] >= 0)
+				dp[x] = (dp[x] + dp[x-C[c]]) % MOD;
+	cout << dp[X] << endl;
 }
 

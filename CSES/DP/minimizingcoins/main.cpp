@@ -28,8 +28,23 @@ typedef vector<ii> vii;
 #define PLIST2(a, b) \
 	for (int i = 0; i < b; i++) cout << a << (i == b-1 ? '\n' : ' ');
 
+int N, X;
+
 signed main()
 {
-
+	cin >> N >> X;
+	vi C(N);
+	for (int n = 0; n < N; n++)
+		cin >> C[n];
+	vi dp(X+1, INF);
+	dp[0] = 0;
+	for (int x = 1; x <= X; x++)
+		for (int c = 0; c < C.size(); c++)
+			if (x - C[c] >= 0)
+				dp[x] = min(dp[x], dp[x-C[c]]+1);
+	if (dp[X] == INF)
+		cout << -1 << endl;
+	else
+		cout << dp[X] << endl;
 }
 

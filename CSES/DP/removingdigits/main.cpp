@@ -30,6 +30,21 @@ typedef vector<ii> vii;
 
 signed main()
 {
-
+	int N;
+	cin >> N;
+	vi dp(N+1, INF);
+	dp[0] = 0;
+	for (int n = 1; n <= N; n++)
+	{
+		int temp = n;
+		while (temp != 0)
+		{
+			int d = temp % 10;
+			if (n-d >= 0)
+				dp[n] = min(dp[n], dp[n-d]+1);
+			temp /= 10;
+		}
+	}
+	cout << dp[N] << endl;
 }
 

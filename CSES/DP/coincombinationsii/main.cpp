@@ -23,13 +23,28 @@ typedef vector<vi> vvi;
 typedef vector<ii> vii;
 
 #define INF 100000000
+#define MOD 1000000007
 #define PLIST(a, b) \
 	for (int i = 0; i < b; i++) cout << a[i] << (i == b-1 ? '\n' : ' ');
 #define PLIST2(a, b) \
 	for (int i = 0; i < b; i++) cout << a << (i == b-1 ? '\n' : ' ');
 
+int N, X;
+
 signed main()
 {
-
+	cin >> N >> X;
+	vi C(N+1);
+	for (int n = 1; n <= N; n++)
+		cin >> C[n];
+	vvi dp(N+1, vi(X+1, 0));
+	dp[0][0] = 1;
+	for (int c = 1; c <= N; c++)
+		for (int x = 0; x <= X; x++)
+			if (x-C[c] >= 0)
+				dp[c][x] = (dp[c-1][x] + dp[c][x-C[c]]) % MOD;
+			else
+				dp[c][x] = dp[c-1][x];
+	cout << dp[N][X] << endl;
 }
 
