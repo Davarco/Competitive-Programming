@@ -27,8 +27,24 @@ typedef vector<ii> vii;
 #define PLIST(a, b) \
 	for (int i = 0; i < b; i++) cout << a[i] << (i == b-1 ? '\n' : ' ');
 
+int N, X;
+
 signed main()
 {
-
+	cin >> N >> X;
+	vi H(N+1);
+	vi S(N+1);
+	for (int n = 1; n <= N; n++)
+		cin >> H[n];
+	for (int n = 1; n <= N; n++)
+		cin >> S[n];
+	int dp[N+1][X+1];
+	memset(dp, 0, sizeof(dp));
+	for (int h = 1; h <= N; h++)
+		for (int x = 0; x <= X; x++)
+			if (x-H[h] >= 0)
+				dp[h][x] = max(dp[h-1][x], dp[h][x-H[h]] + S[h]);
+	for (int h = 0; h <= N; h++)
+		PLIST(dp[h], X+1);
 }
 
