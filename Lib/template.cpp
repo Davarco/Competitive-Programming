@@ -25,7 +25,7 @@ typedef vector<ii> vii;
 #define INF 100000000
 #define MOD 1000000007
 #define PLIST(a, b) \
-	for (int i = 0; i < b; i++) cout << a[i] << (i == b-1 ? '\n' : ' ');
+	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
 signed main()
 {
