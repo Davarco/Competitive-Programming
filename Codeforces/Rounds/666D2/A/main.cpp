@@ -29,9 +29,33 @@ typedef vector<ii> vii;
 #define PLIST(a, b) \
 	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
+int T, N;
+
 signed main()
 {
 	ios_base::sync_with_stdio(false);
+	
+	cin >> T;
+	for (int t = 0; t < T; t++)
+	{
+		cin >> N;
+		vector<string> S(N);
+		for (int n = 0; n < N; n++)
+			cin >> S[n];
 
+		vi count(26);
+		for (int n = 0; n < N; n++)
+			for (int i = 0; i < S[n].size(); i++)
+				count[S[n][i]-'a']++;
+
+		int found = true;
+		for (int i = 0; i < 26; i++)
+			if (count[i] % N != 0)
+				found = false;
+		if (found)
+			cout << "YES" << endl;
+		else
+			cout << "NO" << endl;
+	}
 }
 

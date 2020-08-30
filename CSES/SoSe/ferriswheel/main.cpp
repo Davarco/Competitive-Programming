@@ -29,9 +29,26 @@ typedef vector<ii> vii;
 #define PLIST(a, b) \
 	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
+int N, X;
+
 signed main()
 {
 	ios_base::sync_with_stdio(false);
 
+	cin >> N >> X;
+	vi P(N);
+	for (int n = 0; n < N; n++)
+		cin >> P[n];
+	sort(P.begin(), P.end());
+
+	int a = 0, b = N-1, c = 0;
+	while (a < b)
+	{
+		if (P[a] + P[b] > X)
+			b--;
+		else
+			a++, b--, c++;
+	}
+	cout << N-c << endl;
 }
 
