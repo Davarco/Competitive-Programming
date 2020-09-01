@@ -30,68 +30,29 @@ typedef vector<ii> vii;
 #define PLIST(a, b) \
 	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
-int N;
-
-int POW(int i, int N)
-{
-	int a = 1;
-	while (N--)
-		a *= i;
-	return a;
-}
+int N, M;
 
 signed main()
 {
 	ios_base::sync_with_stdio(false);
 
-	cin >> N;
+	cin >> N >> M;
 	vi A(N);
 	for (int n = 0; n < N; n++)
 		cin >> A[n];
-	sort(A.begin(), A.end());
 
-	int i;
-	if (N <= 38)
+	if (N > M)
 	{
-		/*
-		for (i = 1; POW(i, N-1) <= A[N-1]; i++);
-		int d0 = abs(A[N-1] - POW(i, N-1)), d1 = abs(POW(i+1, N-1) - A[N-1]);
-		if (d1 < d0)
-			i++;
-		*/
-		int mx = 1;
-		while (true)
-		{
-			int b = 1, found = true;
-			for (int a = 0; a < N; a++)
-			{
-				if (b > A[N-1])
-				{
-					found = false;
-					break;
-				}
-				b *= mx;
-			}
-			if (!found)
-				break;
-			mx++;
-		}
-		i = mx;
+		cout << 0 << endl;
+		return 0;
 	}
 	else
-		i = 1;
-
-	int best = LLONG_MAX;
-	for (int a = 1; a <= i; a++)
 	{
-		int cur = 1, diff = 0;
-		for (int n = 0; n < N; n++)
-		{
-			diff += abs(A[n] - cur);
-			cur *= a;
-		}
-		best = min(best, diff);
+		int ans = 1;
+		for (int a = 0; a < N; a++)
+			for (int b = 0; b < a; b++)
+				ans = (ans * abs(A[a] - A[b])) % M;
+		cout << ans << endl;
 	}
-	cout << best << endl;
 }
 

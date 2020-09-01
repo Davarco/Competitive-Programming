@@ -30,68 +30,53 @@ typedef vector<ii> vii;
 #define PLIST(a, b) \
 	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
-int N;
+int T, N;
 
-int POW(int i, int N)
+int gcd(int a, int b)
 {
-	int a = 1;
-	while (N--)
-		a *= i;
-	return a;
+	return b == 0 ? a : gcd(b, a % b);
+}
+
+int lcm(int a, int b)
+{
+	return a * (b / gcd(a, b));
 }
 
 signed main()
 {
 	ios_base::sync_with_stdio(false);
 
-	cin >> N;
-	vi A(N);
-	for (int n = 0; n < N; n++)
-		cin >> A[n];
-	sort(A.begin(), A.end());
-
-	int i;
-	if (N <= 38)
+	cin >> T;
+	for (int t = 0; t < T; t++)
 	{
-		/*
-		for (i = 1; POW(i, N-1) <= A[N-1]; i++);
-		int d0 = abs(A[N-1] - POW(i, N-1)), d1 = abs(POW(i+1, N-1) - A[N-1]);
-		if (d1 < d0)
-			i++;
-		*/
-		int mx = 1;
-		while (true)
-		{
-			int b = 1, found = true;
-			for (int a = 0; a < N; a++)
-			{
-				if (b > A[N-1])
-				{
-					found = false;
-					break;
-				}
-				b *= mx;
-			}
-			if (!found)
-				break;
-			mx++;
-		}
-		i = mx;
-	}
-	else
-		i = 1;
-
-	int best = LLONG_MAX;
-	for (int a = 1; a <= i; a++)
-	{
-		int cur = 1, diff = 0;
+		cin >> N;
+		vi D(N);
 		for (int n = 0; n < N; n++)
+			cin >> D[n];
+		sort(D.begin(), D.end());
+		
+		int X = D[0] * D[N-1];
+		vi divisors;
+		for (int i = 2; i*i <= X; i++)
 		{
-			diff += abs(A[n] - cur);
-			cur *= a;
+			if (X % i == 0)
+				divisors.push_back(i);
+			if (X % i == 0 && X != i*i)
+				divisors.push_back(X / i);
 		}
-		best = min(best, diff);
+		sort(divisors.begin(), divisors.end());
+		
+		int found = false;
+		if (divisors.size() != N)
+			found = true;
+		else
+			for (int i = 0; i < N; i++)
+				if (D[i] != divisors[i])
+					found = true;
+		if (!found)
+			cout << X << endl;
+		else
+			cout << -1 << endl;
 	}
-	cout << best << endl;
 }
 

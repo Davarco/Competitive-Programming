@@ -19,7 +19,6 @@
 using namespace std;
 
 typedef long long LL;
-#define int LL
 typedef pair<int, int> ii;
 typedef vector<int> vi;
 typedef vector<vi> vvi;
@@ -30,68 +29,38 @@ typedef vector<ii> vii;
 #define PLIST(a, b) \
 	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
-int N;
-
-int POW(int i, int N)
-{
-	int a = 1;
-	while (N--)
-		a *= i;
-	return a;
-}
+int N, M;
 
 signed main()
 {
 	ios_base::sync_with_stdio(false);
 
-	cin >> N;
-	vi A(N);
+	cin >> N >> M;
+	map<int, int> H;
+	vi T(M);
 	for (int n = 0; n < N; n++)
-		cin >> A[n];
-	sort(A.begin(), A.end());
-
-	int i;
-	if (N <= 38)
 	{
-		/*
-		for (i = 1; POW(i, N-1) <= A[N-1]; i++);
-		int d0 = abs(A[N-1] - POW(i, N-1)), d1 = abs(POW(i+1, N-1) - A[N-1]);
-		if (d1 < d0)
-			i++;
-		*/
-		int mx = 1;
-		while (true)
-		{
-			int b = 1, found = true;
-			for (int a = 0; a < N; a++)
-			{
-				if (b > A[N-1])
-				{
-					found = false;
-					break;
-				}
-				b *= mx;
-			}
-			if (!found)
-				break;
-			mx++;
-		}
-		i = mx;
+		int h;
+		cin >> h;
+		H[h]++;
 	}
-	else
-		i = 1;
+	for (int m = 0; m < M; m++)
+		cin >> T[m];
 
-	int best = LLONG_MAX;
-	for (int a = 1; a <= i; a++)
+	for (int t = 0; t < T.size(); t++)
 	{
-		int cur = 1, diff = 0;
-		for (int n = 0; n < N; n++)
+		auto it = H.upper_bound(T[t]);
+		if (it == H.begin())
 		{
-			diff += abs(A[n] - cur);
-			cur *= a;
+			cout << -1 << endl;
+			continue;
 		}
-		best = min(best, diff);
+		else
+			it--;
+		cout << it->first << endl;
+		H[it->first]--;
+		if (H[it->first] == 0)
+			H.erase(it);
 	}
-	cout << best << endl;
 }
 

@@ -30,14 +30,13 @@ typedef vector<ii> vii;
 #define PLIST(a, b) \
 	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
-int N;
+int N, L;
 
-int POW(int i, int N)
+int gcd(int a, int b)
 {
-	int a = 1;
-	while (N--)
-		a *= i;
-	return a;
+	if (a == 0)
+		return b;
+	return gcd(b % a, a);
 }
 
 signed main()
@@ -48,50 +47,27 @@ signed main()
 	vi A(N);
 	for (int n = 0; n < N; n++)
 		cin >> A[n];
-	sort(A.begin(), A.end());
 
-	int i;
-	if (N <= 38)
-	{
-		/*
-		for (i = 1; POW(i, N-1) <= A[N-1]; i++);
-		int d0 = abs(A[N-1] - POW(i, N-1)), d1 = abs(POW(i+1, N-1) - A[N-1]);
-		if (d1 < d0)
-			i++;
-		*/
-		int mx = 1;
-		while (true)
-		{
-			int b = 1, found = true;
-			for (int a = 0; a < N; a++)
-			{
-				if (b > A[N-1])
-				{
-					found = false;
-					break;
-				}
-				b *= mx;
-			}
-			if (!found)
-				break;
-			mx++;
-		}
-		i = mx;
-	}
-	else
-		i = 1;
+	vi pre(N);
+	vi suf(N);
+	pre[0] = A[0], suf[0] = A[N-1];
+	for (int n = 1; n < N; n++)
+		pre[n] = gcd(A[n], pre[n-1]), suf[n] = gcd(A[N-n-1], suf[n-1]);
 
-	int best = LLONG_MAX;
-	for (int a = 1; a <= i; a++)
+	vi divisors(N);
+	for (int n = 0; n < N; n++)
 	{
-		int cur = 1, diff = 0;
-		for (int n = 0; n < N; n++)
-		{
-			diff += abs(A[n] - cur);
-			cur *= a;
-		}
-		best = min(best, diff);
+		if (n == 0)
+			divisors[n] = suf[N-2];
+		else if (n == N-1)
+			divisors[n] = pre[N-2];
+		else
+			divisors[n] = gcd(pre[n-1], suf[N-n-2]);
 	}
-	cout << best << endl;
+
+	int prev = divisors[0];
+	for (int n = 1; n < N; n++)
+		prev = divisors[n] * prev / gcd(divisors[n], prev);
+	cout << prev << endl;
 }
 
