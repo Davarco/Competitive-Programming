@@ -11,6 +11,7 @@ typedef vector<iii> viii;
 
 #define Pair(a, b) make_pair(a, b)
 
+// 0-indexed
 class UnionFind
 {
 private:
