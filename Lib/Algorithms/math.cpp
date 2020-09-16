@@ -13,6 +13,25 @@ typedef vector<ii> vii;
 #define PLIST(a, b) \
 	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
+int power(int X, int N, int P)
+{
+	int res = 1;
+	X = X % P;
+	while (N > 0)
+	{
+		if (N & 1)
+			res = (res * X) % P;
+		N = N >> 1;
+		X = (X * X) % P;
+	}
+	return res;
+}
+
+int modinv(int N, int P)
+{
+	return power(N, P-2, P);
+}
+
 void binomial_coefficients()
 {
 	int N = 10;
@@ -27,6 +46,21 @@ void binomial_coefficients()
 	}
 	for (int n = 0; n <= N; n++)
 		PLIST(dp[n], n+1);
+}
+
+void binomial_coefficients_faster()
+{
+	int N = 10, K = 2, P = 13;
+	if (K == 0)
+		return;
+	vi fac(N+1);
+	fac[0] = 1;
+	for (int n = 1; n <= N; n++)
+		fac[n] = (fac[n-1] * n) % P;
+	int ans = fac[N];
+	ans = (ans * modinv(fac[K], P)) % P;
+	ans = (ans * modinv(fac[N-K], P)) % P;
+	cout << ans << endl;
 }
 
 void catalan_numbers()
@@ -103,6 +137,7 @@ signed main()
 	ios_base::sync_with_stdio(false);
 
 	binomial_coefficients();
+	binomial_coefficients_faster();
 	catalan_numbers();
 	sieve_of_eratosthenes();
 	gcd_of_list();
