@@ -28,9 +28,55 @@ typedef vector<ii> vii;
 #define PLIST(a, b) \
 	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
+int T, N, M;
+
 signed main()
 {
 	ios_base::sync_with_stdio(false);
 
+	cin >> T;
+	for (int t = 0; t < T; t++)
+	{
+		cin >> N >> M;
+		
+		vi G[N];
+		for (int m = 0; m < M; m++)
+		{
+			int u, v;
+			cin >> u >> v, --u, --v;
+			G[u].push_back(v), G[v].push_back(u);
+		}
+
+		vi dis(N, INF);
+		queue<int> q;
+		dis[0] = 0, q.push(0);
+		while (q.size() > 0)
+		{
+			int u = q.front(); q.pop();
+			for (int i = 0; i < G[u].size(); i++)
+			{
+				int v = G[u][i];
+				if (dis[v] == INF)
+					dis[v] = dis[u] + 1, q.push(v);
+			}
+		}
+
+		vi A, B;
+		for (int i = 0; i < N; i++)
+			if (dis[i] % 2 == 0)
+				A.push_back(i + 1);
+			else
+				B.push_back(i + 1);
+		if (A.size() < B.size())
+		{
+			cout << A.size() << endl;
+			PLIST(A, A.size());
+		}
+		else
+		{
+			cout << B.size() << endl;
+			PLIST(B, B.size());
+		}
+	}
 }
 

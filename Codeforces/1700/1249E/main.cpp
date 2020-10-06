@@ -13,6 +13,8 @@
  * | 10K | O(n^2)          |
  * | 1M  | O(n log n)      |
  * +-----+-----------------+
+ *
+ * Lower Bound: First >=, Upper Bound: First >
  */
 using namespace std;
 
@@ -28,9 +30,29 @@ typedef vector<ii> vii;
 #define PLIST(a, b) \
 	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
+int N, C;
+
 signed main()
 {
 	ios_base::sync_with_stdio(false);
 
+	cin >> N >> C;
+	vi A(N);
+	vi B(N);
+	for (int n = 1; n < N; n++)
+		cin >> A[n];
+	for (int n = 1; n < N; n++)
+		cin >> B[n];
+	
+	vi dp0(N);
+	vi dp1(N);
+	dp0[0] = 0, dp1[0] = INF;
+	for (int n = 1; n < N; n++)
+	{
+		dp0[n] = min(dp0[n-1] + A[n], dp1[n-1] + A[n]);
+		dp1[n] = min(dp0[n-1] + B[n] + C, dp1[n-1] + B[n]);
+	}
+	for (int n = 0; n < N; n++)
+		cout << min(dp0[n], dp1[n]) << (n == N-1 ? '\n' : ' ');
 }
 
