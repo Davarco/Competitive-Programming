@@ -28,9 +28,33 @@ typedef vector<ii> vii;
 #define plist(a, b) \
 	for (int sad = 0; sad < (int)(b); sad++) cout << a[sad] << (sad == (int)(b)-1 ? '\n' : ' ');
 
+#define int ll
+
+int N;
+string S;
+
 signed main()
 {
 	ios_base::sync_with_stdio(false);
+	
+	cin >> S, N = S.size();
+	int tens = 1;
 
+	vi dp(N);
+	dp[0] = 0, tens = 1;
+	for (int n = 1; n < N; n++)
+		dp[n] = (dp[n-1] + tens*n) % MOD, tens = (tens * 10) % MOD;
+
+	int ans = 0; tens = 1;
+	for (int n = 0; n < N; n++)
+	{
+		int i = N-1-n, d = S[i] - '0', a = i, b = N-i-1;
+		int t0 = (a*(a+1)/2) % MOD;
+		int t1 = (d*tens) % MOD;
+		int t2 = (t0*t1 + d*dp[b]) % MOD;
+		ans = (ans + t2) % MOD;
+		tens = (tens * 10) % MOD;
+	}
+	cout << ans << endl;
 }
 

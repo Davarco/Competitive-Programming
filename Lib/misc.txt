@@ -12,4 +12,7 @@ Basic Runtimes Table:
 | 1M  | O(n log n)      | Good Sort, Segment Tree      |
 +-----+-----------------+------------------------------+
 
-
+Next Lexicographic Permutation:
+1. Find the longest suffix in decreasing order.
+2. Swap the preceding element "x" with the smallest element greater than "x" in the suffix.
+3. Reverse (equivalent to sort) the suffix.
